@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+div#root {
+  height: 100%;
+}
+
+p,
+span,
+section,
+article {
+  @apply text-dark font-body;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  @apply text-dark font-heading;
+}
+
+a {
+  @apply text-primary opacity-100 hover:opacity-70 transition-opacity;
+}
+
+.card {
+  @apply bg-white rounded relative overflow-hidden;
+}
+
+.btn {
+  @apply bg-primary text-white rounded hover:bg-opacity-80 hover:shadow-md transition-all;
+}
+
+.btn-lg {
+  @apply px-3 py-2;
+}
+
+.btn-sm {
+  @apply px-2 py-1 text-sm;
+}

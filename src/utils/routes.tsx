@@ -1,5 +1,5 @@
 import { RouteObject } from 'react-router-dom';
-import { Catalog, Checkout, Home } from '../pages';
+import { Catalog, Checkout, Home, ViewProduct } from '../pages';
 import Layout from '../components/Layout';
 
 export default [
@@ -17,7 +17,16 @@ export default [
       },
       {
         path: 'catalog',
-        element: <Catalog />,
+        children: [
+          {
+            index: true,
+            element: <Catalog />,
+          },
+          {
+            path: 'product/:id',
+            element: <ViewProduct />,
+          },
+        ],
       },
     ],
   },
