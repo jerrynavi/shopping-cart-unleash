@@ -26,7 +26,7 @@ function Layout() {
   return (
     <div className="bg-alternate min-h-full flex flex-col">
       <nav className="bg-white">
-        <div className="flex justify-between container mx-auto p-4 md:px-0">
+        <div className="flex justify-between container mx-auto p-4 lg:px-0">
           <Link to="/">
             <figure className="text-primary">
               <BuildingStorefrontIcon className="h-8 w-8" />
@@ -46,14 +46,14 @@ function Layout() {
         </div>
       </nav>
 
-      <main className="flex-1 container mx-auto py-10 px-4 md:px-0">
+      <main className="flex-1 container mx-auto py-10 px-4 lg:px-0">
         <Suspense fallback={<p>Loading</p>}>
           <Outlet />
         </Suspense>
       </main>
 
       <footer className="flex-shrink-0 bg-primary">
-        <div className="container mx-auto py-8 px-4 md:px-0">
+        <div className="container mx-auto py-8 px-4 lg:px-0">
           <h4 className="tracking-tight text-lg md:text-2xl text-white">
             About us
           </h4>

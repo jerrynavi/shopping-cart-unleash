@@ -42,3 +42,16 @@ a {
 .btn-sm {
   @apply px-2 py-1 text-sm;
 }
+
+.form-item {
+  @apply mb-4;
+}
+
+.form-item span {
+  @apply block mb-1 font-heading font-light;
+}
+
+.form-item input[type='text'],
+.form-item input[type='email'] {
+  @apply block w-full rounded focus:ring-primary focus:shadow-primary focus:border-primary;
+}

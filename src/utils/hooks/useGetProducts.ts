@@ -255,6 +255,10 @@ const staticProducts: Product[] = [
   },
 ];
 
+export function getProductById(id: number) {
+  return staticProducts.find((p) => p.id === id);
+}
+
 export default function useGetProducts({
   featured = false,
   id,
