@@ -1,9 +1,15 @@
 import { Link } from 'react-router-dom';
 import useCart from '../utils/hooks/useCart';
 import { getProductById } from '../utils/hooks/useGetProducts';
+import { Suspense, lazy, useState } from 'react';
+
+const PaymentInternational = lazy(
+  () => import('../components/PaymentInternational')
+);
 
 function Checkout() {
   const { cartItems, numberOfItems, totalValue } = useCart();
+  const [isOpen, setIsOpen] = useState(false);
 
   return numberOfItems < 1 ? (
     <div className="flex flex-col gap-y-6 min-h-[400px] justify-center items-center max-w-xs mx-auto text-center">
@@ -105,11 +111,21 @@ function Checkout() {
               <p>${totalValue}</p>
             </div>
             <div>
-              <button className="btn btn-lg w-full">Checkout</button>
+              <button
+                className="btn btn-lg w-full"
+                type="button"
+                onClick={() => setIsOpen(true)}
+              >
+                Checkout
+              </button>
             </div>
           </div>
         </div>
       </div>
+
+      <Suspense fallback={<p>Getting payment processor ready...</p>}>
+        <PaymentInternational isOpen={isOpen} close={() => setIsOpen(false)} />
+      </Suspense>
     </form>
   );
 }
