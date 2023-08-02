@@ -2,14 +2,18 @@ import { Link } from 'react-router-dom';
 import useCart from '../utils/hooks/useCart';
 import { getProductById } from '../utils/hooks/useGetProducts';
 import { Suspense, lazy, useState } from 'react';
+import { useFlag } from '@unleash/proxy-client-react';
 
 const PaymentInternational = lazy(
   () => import('../components/PaymentInternational')
 );
 
+const PaymentNigeria = lazy(() => import('../components/PaymentNigeria'));
+
 function Checkout() {
   const { cartItems, numberOfItems, totalValue } = useCart();
   const [isOpen, setIsOpen] = useState(false);
+  const isEnabled = useFlag('ngnPaymentProvider');
 
   return numberOfItems < 1 ? (
     <div className="flex flex-col gap-y-6 min-h-[400px] justify-center items-center max-w-xs mx-auto text-center">
@@ -124,7 +128,14 @@ function Checkout() {
       </div>
 
       <Suspense fallback={<p>Getting payment processor ready...</p>}>
-        <PaymentInternational isOpen={isOpen} close={() => setIsOpen(false)} />
+        {isEnabled ? (
+          <PaymentNigeria isOpen={isOpen} close={() => setIsOpen(false)} />
+        ) : (
+          <PaymentInternational
+            isOpen={isOpen}
+            close={() => setIsOpen(false)}
+          />
+        )}
       </Suspense>
     </form>
   );

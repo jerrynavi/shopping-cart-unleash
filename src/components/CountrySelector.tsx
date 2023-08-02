@@ -1,7 +1,8 @@
 import { Combobox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/solid';
-import { getNames } from 'country-list';
-import { Dispatch, Fragment, SetStateAction, useState } from 'react';
+import { useUnleashContext } from '@unleash/proxy-client-react';
+import { getName, getNames } from 'country-list';
+import { Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react';
 
 const countries = getNames();
 
@@ -13,6 +14,7 @@ function CountrySelector({
   setSelectedCountry: Dispatch<SetStateAction<string>>;
 }) {
   const [query, setQuery] = useState('');
+  const updateContext = useUnleashContext();
 
   const filteredCountries =
     query === ''
@@ -24,7 +26,31 @@ function CountrySelector({
   const updateUserCountry = (value: string) => {
     setSelectedCountry(value);
     localStorage.setItem('__country', value);
+    updateContext({ properties: { country: value.toLowerCase() } })
+      .then(() => {
+        // Notify "Updated successfully"
+      })
+      .catch(() => {
+        // Notify "Something went wrong"
+      });
   };
+
+  useEffect(() => {
+    async function getUserLocationFromIp() {
+      const response = await fetch('http://127.0.0.1:5001'); // or your proxy tunnel URL
+      const data = (await response.json()) as {
+        ip: string;
+        countryCode?: string;
+      };
+      updateUserCountry(
+        data.countryCode
+          ? getName(data.countryCode) || selectedCountry
+          : selectedCountry
+      );
+    }
+    void getUserLocationFromIp();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Combobox value={selectedCountry} onChange={updateUserCountry}>
