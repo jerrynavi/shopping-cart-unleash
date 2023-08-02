@@ -1,7 +1,9 @@
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { BuildingStorefrontIcon } from '@heroicons/react/24/solid';
 import useCart from '../utils/hooks/useCart';
+import CountrySelector from './CountrySelector';
+import { getName } from 'country-list';
 
 const navItems: {
   label: string;
@@ -21,8 +23,14 @@ const navItems: {
   },
 ];
 
+const defaultCountry = getName('US');
+
 function Layout() {
   const { numberOfItems } = useCart();
+  const [selectedCountry, setSelectedCountry] = useState(
+    localStorage.getItem('__country') || defaultCountry!
+  );
+
   return (
     <div className="bg-alternate min-h-full flex flex-col">
       <nav className="bg-white">
@@ -60,6 +68,13 @@ function Layout() {
           <p className="text-sm text-white">
             We are a simple e-commerce company.
           </p>
+          <div className="my-4 flex gap-x-4 items-center">
+            <p className="text-white">Change country: </p>
+            <CountrySelector
+              selectedCountry={selectedCountry}
+              setSelectedCountry={setSelectedCountry}
+            />
+          </div>
         </div>
       </footer>
     </div>
